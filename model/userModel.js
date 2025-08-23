@@ -1,5 +1,13 @@
+const bcrypt = require('bcryptjs');
+
 // In-memory user database
-const users = [];
+const users = [
+  {
+    username: 'diego',
+    password: bcrypt.hashSync('123456', 8),
+    favorecidos: [ 'bruno' ], 
+    saldo: 1000
+  }];
 
 module.exports = {
   users

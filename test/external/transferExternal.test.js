@@ -6,11 +6,23 @@ const { expect } = require('chai');
 describe('Transfer External', () => {
     describe('POST /transfers', () => {
         it('Quando informo remetente e destinatario inexistentes recebo 400', async () => {
+            // Capturar o Token
+            const  respostaLogin = await request('http://localhost:3000')
+                .post('/users/login')
+                .send({
+                    username: 'diego',
+                    password: '123456'
+                });
+
+            const token = respostaLogin.body.token;
+
+            // Realizar a transferência
             const resposta = await request('http://localhost:3000')
                 .post('/transfers')
+                .set('Authorization', `Bearer ${token}`)
                 .send({
-                    from: "julio",
-                    to: "priscila",
+                    from: "diego",
+                    to: "BR",
                     value: 100
                 });
             
