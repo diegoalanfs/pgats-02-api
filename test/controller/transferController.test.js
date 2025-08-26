@@ -12,19 +12,6 @@ const transferService = require('../../service/transferService');
 // Testes
 describe('Transfer Controller', () => {
     describe('POST /transfers', () => {
-        /*const token = []
-
-        beforeEach( async () => {
-            const respostaLogin = await request('http://localhost:3000')
-                .post('/users/login')
-                .send({
-                    username: 'diego',
-                    password: '123456'
-                });
-
-            token = respostaLogin.body.token;
-        })*/
-
         it('Quando informo remetente e destinatario inexistentes recebo 400', async () => {
             const respostaLogin = await request('http://localhost:3000')
                 .post('/users/login')
@@ -127,6 +114,6 @@ describe('Transfer Controller', () => {
 
     describe('GET /transfers', () => {
         // Its ficam aqui
-        
+
     });
 });
