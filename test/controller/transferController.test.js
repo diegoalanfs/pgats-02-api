@@ -12,18 +12,22 @@ const transferService = require('../../service/transferService');
 // Testes
 describe('Transfer Controller', () => {
     describe('POST /transfers', () => {
-        const http = 'http://localhost:3000'
-        it('Quando informo remetente e destinatario inexistentes recebo 400', async () => {
-            const respostaLogin = await request(http)
+
+        let token = null;
+
+        beforeEach(async () => {
+            const respostaLogin = await request(app)
                 .post('/users/login')
                 .send({
                     username: 'diego',
                     password: '123456'
                 });
 
-            const token = respostaLogin.body.token;
+            token = respostaLogin.body.token;
+        })
 
-            const resposta = await request(http)
+        it('Quando informo remetente e destinatario inexistentes recebo 400', async () => {
+            const resposta = await request(app)
                 .post('/transfers')
                 .set('Authorization', `Bearer ${token}`)
                 .send({
@@ -37,20 +41,11 @@ describe('Transfer Controller', () => {
         });
 
         it('Usando Mocks: Quando informo remetente e destinatario inexistentes recebo 400', async () => {
-            const respostaLogin = await request(http)
-                .post('/users/login')
-                .send({
-                    username: 'diego',
-                    password: '123456'
-                });
-
-            const token = respostaLogin.body.token;
-
             // Mocar apenas a função transfer do Service
             const transferServiceMock = sinon.stub(transferService, 'transfer');
             transferServiceMock.throws(new Error('Usuário remetente ou destinatário não encontrado'));
 
-            const resposta = await request(http)
+            const resposta = await request(app)
                 .post('/transfers')
                 .set('Authorization', `Bearer ${token}`)
                 .send({
@@ -66,16 +61,7 @@ describe('Transfer Controller', () => {
             sinon.restore();
         });
 
-        it.skip('Usando Mocks: Quando informo valores válidos eu tenho sucesso com 201 CREATED', async () => {
-            const respostaLogin = await request(http)
-                .post('/users/login')
-                .send({
-                    username: 'diego',
-                    password: '123456'
-                });
-
-            const token = respostaLogin.body.token;
-
+        it('Usando Mocks: Quando informo valores válidos eu tenho sucesso com 201 CREATED', async () => {
             // Mocar apenas a função transfer do Service
             const transferServiceMock = sinon.stub(transferService, 'transfer');
             transferServiceMock.returns({
@@ -85,7 +71,7 @@ describe('Transfer Controller', () => {
                 date: new Date().toISOString()
             });
 
-            const resposta = await request(http)
+            const resposta = await request(app)
                 .post('/transfers')
                 .set('Authorization', `Bearer ${token}`)
                 .send({
