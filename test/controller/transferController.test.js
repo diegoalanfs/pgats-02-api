@@ -13,7 +13,7 @@ const transferService = require('../../service/transferService');
 describe('Transfer Controller', () => {
     describe('POST /transfers', () => {
 
-        let token = null;
+        //let token = null;
 
         beforeEach(async () => {
             const respostaLogin = await request(app)
@@ -32,7 +32,7 @@ describe('Transfer Controller', () => {
                 .set('Authorization', `Bearer ${token}`)
                 .send({
                     from: "diego",
-                    to: "bruno",
+                    to: "alan",
                     value: 100
                 });
 
